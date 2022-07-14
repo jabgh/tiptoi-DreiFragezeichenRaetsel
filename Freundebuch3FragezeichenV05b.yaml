@@ -1,0 +1,101 @@
+product-id: 909
+comment: marcs freunde buch raetsel
+init: $stage:=1 $wrong := 0
+welcome: welcome, player1
+language: de 
+
+replay: 3944
+scriptcodes:
+  feldS4right: 3956
+  feldS2E3: 3952
+  feldS4wrong: 3957
+  feldS2notE3: 3953
+  feldS1nKREUZ: 3950
+  feldStift: 3959
+  feldS5Botschaft: 3958
+  feldS1KREUZ: 3949
+  feldFragezeichen: 3947
+  feldS2A3: 3951
+  feldS3wrong: 3955
+  feldS3right: 3954
+  feldReset: 3948
+  feldDummySet: 3946
+stop: 3945
+    
+
+scripts:
+    feldStift:
+        P(WillstDuVonForneAnfangen)
+    
+    feldFragezeichen:
+        J(feldReset) 
+    
+    feldS1KREUZ:
+    - $wrong == 1? P(verschlVonVorne)
+    - $stage == 1? $stage := 2  P(richtig1) 
+
+    feldS1nKREUZ:
+    - $wrong == 1? P(verschlVonVorne)
+    - $stage == 1? $wrong := 1 $stage := 2  P(verschlossen) 
+
+    feldS2A3:
+    - $wrong == 1? P(verschlVonVorne)
+    - $stage == 2? $stage := 20 P(richtig2a)
+
+    feldS2E3:
+    - $wrong == 1? P(verschlVonVorne)
+    - $stage == 20? $stage := 3 P(katze) 
+    
+    feldS2notE3:
+    - $wrong == 1? P(verschlVonVorne)
+    - $stage == 20? $wrong := 1 $stage := 3 P(hund) 
+  
+    feldS3right:
+    - $wrong == 1? P(verschlVonVorne)
+    - $stage == 3? $stage := 4 P(nehmeLupe)
+
+    feldS3wrong:
+    - $wrong == 1? P(verschlVonVorne)
+    - $stage == 3? $wrong := 1 P(verschlossen)
+    
+    feldS4right:
+    - $wrong == 1? P(verschlVonVorne)
+    - $stage == 4? $stage := 5 P(BotschaftFreigegeben) 
+
+    feldS4wrong:
+    - $wrong == 1? P(verschlVonVorne)
+    - $stage == 4? $wrong := 1 P(verschlossen)
+
+
+    feldDummySet:
+    - $stage := 5 $wrong := 0  P(beep)
+    
+    feldReset:
+    - $wrong := 0  $stage := 1 P(ResetGemacht) P(player1)
+    
+    feldS5Botschaft:
+    - $wrong == 1? P(verschlVonVorne)
+    - $stage == 5? $wrong == 0? $stage := 6  P(DieGeheimbotschaft)
+    - $stage == 6? P(langeBotschaft)
+    - $wrong == 0? P(Keinegb)
+
+
+speak:
+    welcome: "Hallo Bernd, kannst Du wie die Drei Fragezeichen das Raetsel loesen und die Geheimbotschaft finden."
+    player1: "Suche das Feld mit dem Kreuz und tippe es an"
+    richtig1: "Richtig, tippe erst A3 dann E3 an"    
+    richtig2a: "Tippe das Feld mit "
+    katze: "die Truhe"
+    hund: "den Berg"
+    Keinegb: "Das Geheimnis bleibt verschlossen"
+    DieGeheimbotschaft: "Wir sind Freunde"
+    WillstDuVonForneAnfangen: "Wenn Du von Vorne anfangen willst, tippe die 3 Fragezeichen an"
+    ResetGemacht : "Habe alles vergessen, beginne nochmal mit dem Raetsel neu"
+    nehmeLupe : "Mit einer Lupe findest Du welches Feld als naechstes richtig ist" 
+    verschlossen : "Leider bleibt die geheime Botschaft verschlossen, versuche es nochmal" 
+    BotschaftFreigegeben : "Die geheime Botschaft ist freigegeben, tippe die Sprechblase an" 
+    verschlVonVorne : "Du bist in einer Sackgasse und kannst die Nachricht nicht mehr oeffnen, fange von vorne an indem Du auf die Fragezeichen tippst"
+#    beep : "Piep, grummel"
+    langeBotschaft : "in einer geheimen Hoehle..." 
+        
+    
